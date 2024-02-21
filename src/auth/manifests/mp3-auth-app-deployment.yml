@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mp3-auth-app
+  labels:
+    app: mp3-auth-app-label
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mp3-auth-app-label
+  strategy: # moved strategy field outside of selector
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+  template: # corrected indentation for template
+    metadata:
+      labels:
+        app: mp3-auth-app-label
+    spec:
+      containers:
+        - name: mp3-auth-app
+          image: mojimich2015/mp3-auth-service-app:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: mp3-auth-app-configmap
+            - secretRef:
+                name: mp3-auth-app-secret

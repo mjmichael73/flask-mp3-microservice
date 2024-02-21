@@ -1,20 +1,33 @@
 version: "3.9"
 
 services:
-  auth-mysql:
+  mp3-auth-service-db:
     image: mysql:8.0.36-debian
-    container_name: auth-mysql
+    container_name: mp3-auth-service-db
     ports:
       - "3306:3306"
     volumes:
-      - auth-service-db-data:/var/lib/mysql
+      - mp3-auth-service-db-data:/var/lib/mysql
     env_file:
       - ./mysql/.env
     networks:
-      - auth-service-net
+      - mp3-auth-service-net
+  mp3-auth-service-app:
+    build: .
+    container_name: mp3-auth-service-app
+    image: mojimich2015/mp3-auth-service-app
+    ports:
+      - "80:5000"
+    depends_on:
+      - mp3-auth-service-db
+    volumes:
+      - .:/app
+    working_dir: "/app"
+    networks:
+      - mp3-auth-service-net
 
 volumes:
-  auth-service-db-data:
+  mp3-auth-service-db-data:
 networks:
-  auth-service-net:
+  mp3-auth-service-net:
     driver: bridge

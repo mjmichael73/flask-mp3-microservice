@@ -1,0 +1,6 @@
+venv
+mysql
+docker-compose.yml
+Dockerfile
+.gitignore
+.dockerignore
