@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  auth-mysql:
+    image: mysql:8.0.36-debian
+    container_name: auth-mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - auth-service-db-data:/var/lib/mysql
+    env_file:
+      - ./mysql/.env
+    networks:
+      - auth-service-net
+
+volumes:
+  auth-service-db-data:
+networks:
+  auth-service-net:
+    driver: bridge
